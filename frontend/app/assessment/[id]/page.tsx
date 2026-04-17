@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { Panel, Group, Separator } from "react-resizable-panels";
 import MonacoEditor from "@/components/Editor/MonacoEditor";
 import ProblemDescription from "@/components/Workspace/ProblemDescription";
 import Console from "@/components/Workspace/Console";
@@ -83,13 +83,12 @@ export default function AssessmentPage({ params }: { params: { id: string } }) {
     );
   };
 
-  // --- Global Keyboard Shortcuts (Works when focus is outside the editor) ---
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
       const isCtrlOrCmd = e.ctrlKey || e.metaKey;
       
       if (isCtrlOrCmd && e.key.toLowerCase() === 's') {
-        e.preventDefault(); // Stop browser from saving the webpage
+        e.preventDefault(); 
       } else if (isCtrlOrCmd && e.key === "'") {
         e.preventDefault();
         handleRun();
@@ -120,7 +119,6 @@ export default function AssessmentPage({ params }: { params: { id: string } }) {
 
   return (
     <main className="h-screen w-screen flex flex-col bg-[#0a0a0a] overflow-hidden">
-      {/* Navbar: Added flex-shrink-0 so it never gets crushed by the editor */}
       <nav className="h-14 flex-shrink-0 border-b border-gray-800 flex items-center justify-between px-6 bg-[#1a1a1a]">
         <div className="flex items-center gap-8">
           <span className="text-blue-500 font-black italic tracking-widest text-lg">BRIDGE<span className="text-white">_OA</span></span>
@@ -167,11 +165,11 @@ export default function AssessmentPage({ params }: { params: { id: string } }) {
         </div>
       </nav>
 
-      {/* WORKSPACE: Wrapped in flex-1 min-h-0 to perfectly constraint the height and prevent pushing under navbar */}
       <div className="flex-1 min-h-0 w-full">
-        {/* FIXED: Replaced Group with PanelGroup and orientation with direction */}
-        <PanelGroup direction="horizontal" className="h-full">
-          <Panel defaultSize={40} minSize={25} className="bg-[#0f0f0f] overflow-y-auto">
+        {/* CORRECT V4 API: Group and orientation */}
+        <Group orientation="horizontal" className="h-full">
+          {/* CORRECT V4 API: Sizes must be strings for percentages */}
+          <Panel defaultSize="40%" minSize="25%" className="bg-[#0f0f0f] overflow-y-auto">
             {!activeQuestion ? (
               <div className="h-full flex items-center justify-center text-gray-600 font-mono text-sm animate-pulse">
                 Decrypting problem parameters...
@@ -186,14 +184,12 @@ export default function AssessmentPage({ params }: { params: { id: string } }) {
             )}
           </Panel>
 
-          {/* FIXED: Replaced Separator with PanelResizeHandle */}
-          <PanelResizeHandle className="w-1 bg-black hover:bg-blue-600 active:bg-blue-600 transition-colors cursor-col-resize" />
+          {/* CORRECT V4 API: Separator */}
+          <Separator className="w-1 bg-black hover:bg-blue-600 active:bg-blue-600 transition-colors cursor-col-resize" />
 
-          <Panel defaultSize={60} minSize={30}>
-            {/* FIXED: Replaced Group with PanelGroup and orientation with direction */}
-            <PanelGroup direction="vertical">
-              <Panel defaultSize={70} minSize={20}>
-                {/* Passed onRun and onSubmit down to the Monaco Editor */}
+          <Panel defaultSize="60%" minSize="30%">
+            <Group orientation="vertical">
+              <Panel defaultSize="70%" minSize="20%">
                 <MonacoEditor 
                   code={currentCode} 
                   onChange={handleCodeChange} 
@@ -202,17 +198,16 @@ export default function AssessmentPage({ params }: { params: { id: string } }) {
                 />
               </Panel>
 
-              {/* FIXED: Replaced Separator with PanelResizeHandle */}
-              <PanelResizeHandle className="h-1 bg-black hover:bg-blue-600 active:bg-blue-600 transition-colors cursor-row-resize" />
+              <Separator className="h-1 bg-black hover:bg-blue-600 active:bg-blue-600 transition-colors cursor-row-resize" />
 
-              <Panel defaultSize={30} minSize={10}>
+              <Panel defaultSize="30%" minSize="10%">
                 <Console 
                   output={status === "Running" || status === "Submitting" ? `[SYSTEM LOG]: ${result || status}...` : result} 
                 />
               </Panel>
-            </PanelGroup>
+            </Group>
           </Panel>
-        </PanelGroup>
+        </Group>
       </div>
     </main>
   );
