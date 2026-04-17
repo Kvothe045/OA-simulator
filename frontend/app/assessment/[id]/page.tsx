@@ -49,7 +49,7 @@ export default function AssessmentPage({ params }: { params: { id: string } }) {
 
     setActiveQuestion(null); 
 
-    fetch(`http://localhost:8000/api/question/${slug}`)
+    fetch(`https://oa-simulator.onrender.com/api/question/${slug}`)
       .then(res => res.json())
       .then((data) => {
         setActiveQuestion({ ...data, slug, url });

@@ -15,7 +15,7 @@ export default function ResizablePanels({ params }: { params: { id: string } }) 
   useEffect(() => {
     // For now, using a hardcoded slug to test the bridge
     const slug = "house-robber-ii"; 
-    fetch(`http://localhost:8000/api/question/${slug}`)
+    fetch(`https://oa-simulator.onrender.com/api/question/${slug}`)
       .then(res => res.json())
       .then(data => {
         setQuestion(data);
