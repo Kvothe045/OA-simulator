@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Panel, Group, Separator } from "react-resizable-panels";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import MonacoEditor from "@/components/Editor/MonacoEditor";
 import ProblemDescription from "@/components/Workspace/ProblemDescription";
 import Console from "@/components/Workspace/Console";
@@ -169,7 +169,8 @@ export default function AssessmentPage({ params }: { params: { id: string } }) {
 
       {/* WORKSPACE: Wrapped in flex-1 min-h-0 to perfectly constraint the height and prevent pushing under navbar */}
       <div className="flex-1 min-h-0 w-full">
-        <Group orientation="horizontal" className="h-full">
+        {/* FIXED: Replaced Group with PanelGroup and orientation with direction */}
+        <PanelGroup direction="horizontal" className="h-full">
           <Panel defaultSize={40} minSize={25} className="bg-[#0f0f0f] overflow-y-auto">
             {!activeQuestion ? (
               <div className="h-full flex items-center justify-center text-gray-600 font-mono text-sm animate-pulse">
@@ -185,10 +186,12 @@ export default function AssessmentPage({ params }: { params: { id: string } }) {
             )}
           </Panel>
 
-          <Separator className="w-1 bg-black hover:bg-blue-600 active:bg-blue-600 transition-colors cursor-col-resize" />
+          {/* FIXED: Replaced Separator with PanelResizeHandle */}
+          <PanelResizeHandle className="w-1 bg-black hover:bg-blue-600 active:bg-blue-600 transition-colors cursor-col-resize" />
 
           <Panel defaultSize={60} minSize={30}>
-            <Group orientation="vertical">
+            {/* FIXED: Replaced Group with PanelGroup and orientation with direction */}
+            <PanelGroup direction="vertical">
               <Panel defaultSize={70} minSize={20}>
                 {/* Passed onRun and onSubmit down to the Monaco Editor */}
                 <MonacoEditor 
@@ -199,16 +202,17 @@ export default function AssessmentPage({ params }: { params: { id: string } }) {
                 />
               </Panel>
 
-              <Separator className="h-1 bg-black hover:bg-blue-600 active:bg-blue-600 transition-colors cursor-row-resize" />
+              {/* FIXED: Replaced Separator with PanelResizeHandle */}
+              <PanelResizeHandle className="h-1 bg-black hover:bg-blue-600 active:bg-blue-600 transition-colors cursor-row-resize" />
 
               <Panel defaultSize={30} minSize={10}>
                 <Console 
                   output={status === "Running" || status === "Submitting" ? `[SYSTEM LOG]: ${result || status}...` : result} 
                 />
               </Panel>
-            </Group>
+            </PanelGroup>
           </Panel>
-        </Group>
+        </PanelGroup>
       </div>
     </main>
   );
